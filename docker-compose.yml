@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    image: openpresta/prestashop:1.6.1.x-php7.2
+    build:
+      context: .
+    ports:
+      - 8016:80
+    volumes:
+      - ./logs:/var/log/apache2
+      - ./config:/var/www/html/config
