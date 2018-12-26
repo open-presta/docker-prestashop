@@ -1,15 +1,14 @@
 version: '3'
 services:
-  web:
+  ps16-web:
     image: openpresta/prestashop:1.6.1.x-php7.2
     ports:
       - 8016:80
     volumes:
-      - ./logs:/var/log/apache2
-      - config:/var/www/html/config
-      - ./modules:/var/www/html/modules
+      - ./ps16-logs:/var/log/apache2
+      - ps16-config:/var/www/html/config
 
-  database:
+  ps16-database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -18,8 +17,33 @@ services:
       MYSQL_PASSWORD: ps_password
       MYSQL_ROOT_PASSWORD: ps_root
     volumes:
-      - db-data:/var/lib/mysql
+      - ps16-db-data:/var/lib/mysql
+    ports:
+      - 3316:3306
+
+  ps17-web:
+    image: openpresta/prestashop:1.7.5.x-php7.2
+    ports:
+      - 8017:80
+    volumes:
+      - ./ps17-logs:/var/log/apache2
+      - ps17-config:/var/www/html/app/config
+
+  ps17-database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: prestashop
+      MYSQL_USER: ps_user
+      MYSQL_PASSWORD: ps_password
+      MYSQL_ROOT_PASSWORD: ps_root
+    volumes:
+      - ps17-db-data:/var/lib/mysql
+    ports:
+      - 3317:3306
 
 volumes:
-  config: ~
-  db-data: ~
+  ps16-config: ~
+  ps16-db-data: ~
+  ps17-config: ~
+  ps17-db-data: ~
