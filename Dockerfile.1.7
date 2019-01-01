@@ -18,7 +18,8 @@ RUN wget https://github.com/PrestaShop/PrestaShop/archive/1.7.5.x.zip -O /tmp/pr
     && rm -rf /tmp/PrestaShop-1.7.5.x \
     && composer install --no-dev
 
-USER root
-
 VOLUME /var/www/html/app/config
 VOLUME /var/www/html/modules
+
+USER root
+

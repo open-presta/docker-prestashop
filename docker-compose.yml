@@ -19,15 +19,25 @@ services:
     volumes:
       - ps16-db-data:/var/lib/mysql
     ports:
-      - 3316:3306
+      - 3416:3306
 
   ps17-web:
-    image: openpresta/prestashop:1.7.5.x-php7.2
+    image: openpresta/prestashop:1.7.5.x-php7.2-debug
     ports:
       - 8017:80
     volumes:
       - ./ps17-logs:/var/log/apache2
       - ps17-config:/var/www/html/app/config
+    environment:
+      HOSTNAME: localhost
+      DB_HOST: ps17-database:3306
+      DB_NAME: prestashop
+      DB_USER: ps_user
+      DB_PASSWORD: ps_password
+      EMAIL: john.doe@example.com
+      PASSWORD: qwerty12345
+      SHOP_NAME: "Prestashop 1.7 Developer Demo Store"
+      LANGUAGE: en
 
   ps17-database:
     image: mysql
@@ -40,7 +50,7 @@ services:
     volumes:
       - ps17-db-data:/var/lib/mysql
     ports:
-      - 3317:3306
+      - 3417:3306
 
 volumes:
   ps16-config: ~
