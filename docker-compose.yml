@@ -22,22 +22,18 @@ services:
       - 3416:3306
 
   ps17-web:
+    depends_on:
+      - ps17-database
     image: openpresta/prestashop:1.7.5.x-php7.2-debug
     ports:
       - 8017:80
-    volumes:
-      - ./ps17-logs:/var/log/apache2
-      - ps17-config:/var/www/html/app/config
     environment:
-      HOSTNAME: localhost
-      DB_HOST: ps17-database:3306
-      DB_NAME: prestashop
-      DB_USER: ps_user
-      DB_PASSWORD: ps_password
-      EMAIL: john.doe@example.com
-      PASSWORD: qwerty12345
-      SHOP_NAME: "Prestashop 1.7 Developer Demo Store"
-      LANGUAGE: en
+      XDEBUG_REMOTE_HOST: 0.0.0.0
+    volumes:
+      - ./ps17-logs:/var/log/apache2:delegated
+      - ps17-config:/var/www/html/app/config:cached
+      - ps17-modules:/var/www/html/modules:cached
+      - ps17-images:/var/www/html/img:cached
 
   ps17-database:
     image: mysql
@@ -57,3 +53,5 @@ volumes:
   ps16-db-data: ~
   ps17-config: ~
   ps17-db-data: ~
+  ps17-modules: ~
+  ps17-images: ~

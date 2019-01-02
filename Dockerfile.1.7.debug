@@ -1,31 +1,11 @@
 FROM openpresta/prestashop:1.7.5.x-php7.2
 
-ENV HOSTNAME ps17.docker.loc
-ENV DB_HOST ps17-database:3306
-ENV DB_NAME prestashop
-ENV DB_USER ps_user
-ENV DB_PASSWORD ps_password
-ENV EMAIL john.doe@example.com
-ENV PASSWORD qwerty12345
-ENV SHOP_NAME "Prestashop 1.7 Developer Demo Store"
-ENV LANGUAGE en
+ENV XDEBUG_REMOTE_HOST 0.0.0.0
 
 RUN pecl install xdebug-2.6.0 \
     && docker-php-ext-enable xdebug \
-    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_connect_back=on" >> /usr/local/etc/php/conf.d/xdebug.ini
+    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-CMD "php \
-    --step=all \
-    --language=${LANGUAGE} \
-    --domain=${HOSTNAME} \
-    --db_server=${DB_HOST} \
-    --db_user=${DB_USER} \
-    --db_password=${DB_PASSWORD} \
-    --db_name=${DB_NAME} \
-    --name=${SHOP_NAME} \
-    --email=${EMAIL} \
-    --password=${PASSWORD} \
-    --newsletter=0 \
-    apache2-foreground"
+CMD echo "xdebug.remote_host=${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && apache2-foreground
